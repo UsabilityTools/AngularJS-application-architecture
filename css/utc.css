@@ -24,3 +24,9 @@ pre[class*=language-]>code[data-language] {
 	position: absolute;
 	right: 1.5em;
 }
+
+.huge {
+	display: block;
+	font-size: 200%;
+	margin: .25em 0;
+}
