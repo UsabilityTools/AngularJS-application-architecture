@@ -1,0 +1,26 @@
+body {
+	background: url("/utc.png") 4% 95% no-repeat, radial-gradient(#EEE, #035c7c) center center no-repeat;
+}
+
+small {
+	font-size: 80%;
+}
+
+pre[class*=language-]>code[data-language] {
+	overflow: auto;
+}
+
+#slide1 {
+	position: relative;
+}
+
+#slide1 .page-header {
+	font-size: 300%;
+	line-height: 1.1;
+}
+
+#slide1 .page-footer {
+	bottom: 1.5em;
+	position: absolute;
+	right: 1.5em;
+}
