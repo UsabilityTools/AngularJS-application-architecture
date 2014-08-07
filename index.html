@@ -89,8 +89,8 @@
                 </header>
                 
                 <p class="text-center">
-                    <a href="https://github.com/reefat/angular-seed/tree/master/js/app">
-                        <img src="images/github-angular-seed_02.png" width="100%" >
+                    <a href="images/structure-common.png">
+                        <img src="images/structure-common.png" height="100%" >
                     </a>
                 </p>
             </section>
@@ -100,16 +100,24 @@
                     <h2>Seed hunting – common structure</h2>
                 </header>
                 
-                <p class="text-center">
-                    <a href="images/structure-common.png">
-                        <img src="images/structure-common.png" height="100%" >
-                    </a>
-                </p>
+                <p>Pros</p>
+                <ul>
+                    <li>easy to start and add new features fast</li>
+                </ul>
+                <p>Cons:</p>
+                <ul>
+                    <li>every component can use all others</li>
+                    <li>hard to define components of single feature</li>
+                    <li>potentially messed communication</li>
+                    <li>unclear dependency tree</li>
+                    <li>main module have to manage everything (dependencies, configuration, routes, etc.)</li>
+                </ul>
             </section>
 
             <section id="slide8" class="step slide">
                 <p class="big center">
-                    <strong>But we don't like to be "common"!</strong>
+                    <strong>We want to avoid problems that we already perceived</strong><br/>
+                    (and we don't like to be common!)x
                 </p>
             </section>
 
@@ -138,6 +146,21 @@
             </section>
 
             <section id="slide11" class="step slide">
+                <header class="page-header text-center">
+                    <h2>State</h2>
+                </header>
+                
+                <ul>
+                    <li>can have views (or be an abstract)</li>
+                    <li>can have substates</li>
+                    <li>can define common components for its views and substates</li>
+                    <li>depends on its ancestors</li>
+                    <li>doesn't depend on its children</li>
+                    <li>manages dependencies, routes and configuration that it needs</li>
+                </ul>
+            </section>
+
+            <section id="slide12" class="step slide">
                 <header class="page-header text-center">
                     <h2>State – root</h2>
                 </header>
@@ -187,7 +210,6 @@
         ]))
         .config(function (
             $stateProvider,
-            $urlRouterProvider,
 
             VRootHeader,
             VRootFooter,
@@ -211,7 +233,7 @@
                 </pre>
             </section>
 
-            <section id="slide12" class="step slide">
+            <section id="slide13" class="step slide">
                 <header class="page-header text-center">
                     <h2>State – root.project</h2>
                 </header>
@@ -223,50 +245,19 @@
         (features.active('project.add') && MProjectAddState.name),
         (features.active('project.one') && MProjectOneState.name),
 
-        MProjectHeaderView.name,
-
         'ui.router'
     ]))
     .config(function (
-        $stateProvider,
-
-        VProjectHeader
+        $stateProvider
     ) {
         $stateProvider
             .state('root.authenticated.project', {
                 url: '/project',
                 abstract: true,
-                views: {
-                    'header@': VProjectHeader
-                }
-            });
-    });
-                    </code>
-                </pre>
-            </section>
-
-            <section id="slide13" class="step slide">
-                <header class="page-header text-center">
-                    <h2>State – root.project.list</h2>
-                </header>
-                
-                <pre class="code-listing">
-                    <code class="language-javascript">
-    angular.module('app.project__list.state', [
-        MProjectListContentView.name,
-
-        'ui.router'
-    ])
-    .config(function (
-        $stateProvider,
-
-        VProjectListContent
-    ) {
-        $stateProvider
-            .state('root.authenticated.project.list', {
-                url: '/list/',
-                views: {
-                    'content@': VProjectListContent
+                resolve: {
+                    RProject: function() {
+                        return MProjects.service('project');
+                    }
                 }
             });
     });
@@ -347,25 +338,13 @@
                 </header>
                 
                 <p class="text-center">
-                    <a href="images/structure-utc-view.png">
-                        <img src="images/structure-utc-view.png" height="500px" >
-                    </a>
-                </p>
-            </section>
-
-            <section id="slide16" class="step slide">
-                <header class="page-header text-center">
-                    <h2>View</h2>
-                </header>
-                
-                <p class="text-center">
                     <a href="images/wireframe-simple.png">
                         <img src="images/wireframe-simple.png" height="500px" >
                     </a>
                 </p>
             </section>
 
-            <section id="slide17" class="step slide">
+            <section id="slide16" class="step slide">
                 <header class="page-header text-center">
                     <h2>View</h2>
                 </header>
@@ -377,7 +356,32 @@
                 </p>
             </section>
 
+            <section id="slide17" class="step slide">
+                <header class="page-header text-center">
+                    <h2>View</h2>
+                </header>
+                
+                <p class="text-center">
+                    <a href="images/structure-utc-view.png">
+                        <img src="images/structure-utc-view.png" height="500px" >
+                    </a>
+                </p>
+            </section>
+
             <section id="slide18" class="step slide">
+                <header class="page-header text-center">
+                    <h2>View</h2>
+                </header>
+                
+                <ul>
+                    <li>defines pair template-controller and exposes it for state</li>
+                    <li>can define its own components</li>
+                    <li>depends on its ancestors</li>
+                    <li>it's a leaf of the app tree – it hasn't children</li>
+                </ul>
+            </section>
+
+            <section id="slide19" class="step slide">
                 <header class="page-header text-center">
                     <h2>View – project__list__content</h2>
                 </header>
@@ -414,6 +418,19 @@
                 </pre>
             </section>
 
+            <section id="slide20" class="step slide">
+                <header class="page-header text-center">
+                    <h2>View – component</h2>
+                </header>
+                
+                <ul>
+                    <li>can use components defined by all its ancestors (view, state, grand-state etc.)</li>
+                    <li>controllers manages single template</li>
+                    <li>services, filters and directives can use one another</li>
+                    <li>any app part <strong>outside the view</strong> can't (or rather mustn't) use component defined by the view</li>
+                </ul>
+            </section>
+
             <section id="slide19" class="step slide">
                 <header class="page-header text-center">
                     <h2>View controller – project__list__content</h2>
@@ -435,7 +452,20 @@
                 </pre>
             </section>
 
-            <section id="slide20" class="step slide">
+            <section id="slide21" class="step slide">
+                <header class="page-header text-center">
+                    <h2>Shared components</h2>
+                </header>
+                
+                <ul>
+                    <li>can use components defined by all its ancestors (view, state, grand-state etc.)</li>
+                    <li>no controllers!</li>
+                    <li>services, filters and directives can use one another and can be used by children's components</li>
+                    <li>any app part <strong>above the state</strong> can't (or rather mustn't) use component defined by the view</li>
+                </ul>
+            </section>
+
+            <section id="slide22" class="step slide">
                 <header class="page-header text-center">
                     <h2>Naming conventions</h2>
                 </header>
@@ -450,6 +480,18 @@
                 <ul>
                     <li>app.project__list.state, app.project__list__content.view</li>
                     <li><a href="http://en.wikipedia.org/wiki/Hungarian_notation">Hungarian Notation</a> – MProjectListContent, VProjectListContent</li>
+                </ul>
+            </section>
+
+            <section id="slide23" class="step slide">
+                <header class="page-header text-center">
+                    <h2>Build process</h2>
+                </header>
+                
+                <ul>
+                    <li>configuration of single task in separate file (see <a href="https://www.npmjs.org/package/load-grunt-configs">load-grunt-configs</a>)</li>
+                    <li>meaningless tasks are grouped (ex. <a href="https://www.npmjs.org/package/grunt-nestedtasksrunner">grunt-nestedtasksrunner</a>)</li>
+                    <li>dist configs are a base for dev ones</li>
                 </ul>
             </section>
 
@@ -483,16 +525,48 @@
                 </p>
             </section>
 
-            <!-- <section id="slide3" class="step slide">
+            <section id="slide25" class="step slide">
                 <header class="page-header text-center">
-                    <h2>When you are starting a brand new webapp, you want to...</h2>
+                    <h2>All is all right</h2>
                 </header>
                 
-                <p class="visible-when-active image-with-overlay">
-                    <strong class="overlay animation-blink">CODE!</strong>
-                    <img class="image" src="images/coding_maniac.gif">
+                <ul>
+                    <li>easy to determine which components are required for particular feature</li>
+                    <li>clear connections between components</li>
+                    <li>communication through the nearest common ancestor (except exceptions...)</li>
+                    <li>able to further scaling up</li>
+                </ul>
+            </section>
+
+            <section id="slide26" class="step slide">
+                <header class="page-header text-center">
+                    <h2>Pitfails or trade offs?</h2>
+                </header>
+                
+                <p class="big center">
+                    <strong>Tell me!</strong>
                 </p>
-            </section> -->
+            </section>
+
+            <section id="slide29" class="step slide">
+                <header class="page-header text-center">
+                    <h2>If you like it – try it (and contribute)</h2>
+                </header>
+
+                <p class="center">
+                    <a href="https://github.com/UsabilityTools/angular-require-seed">angular-require-seed</a>
+                </p>
+            </section>
+
+            <section id="slide28" class="step slide">
+                
+                <p class="big center">
+                    <strong>Thank you!</strong>
+                </p>
+                <p class="center">
+                    <a href="https://github.com/erykpiast" rel="author">Eryk Napierała</a>@<a href="https://github.com/UsabilityTools">UsabilityTools.com</a>
+                </p>
+            </section>
 
         </div>
 

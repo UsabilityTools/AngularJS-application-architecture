@@ -8,6 +8,7 @@ body {
 	border-top-left-radius: 0; 
 	border-top-right-radius: 0;
 	left: 0;
+	height: 87%;
 	pointer-events: all;
 	position: fixed;
 	top: -1px;
@@ -15,6 +16,7 @@ body {
 	        transition: transform .2s ease-out .5s;
 	-webkit-transform: translateX( -100% );
 	        transform: translateX( -100% );
+	width: 20em;
 	z-index: 99999;
 }
 	.content-index:hover {
@@ -54,9 +56,18 @@ body {
 		}
 
 
-	.content-index-list-item > a {
-		text-shadow: none;
+	.content-index-list {
+		bottom: 0;
+		left: 0.75em;
+		overflow: auto;
+		position: absolute;
+		top: 1.5em;
+		right: 0;
 	}
+
+		.content-index-list-item > a {
+			text-shadow: none;
+		}
 	
 
 
